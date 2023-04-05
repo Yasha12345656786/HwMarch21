@@ -58,31 +58,5 @@ async function ConcatFiles(){
     }
 
 }
-async function ReadRndFile(){
-    try {
-       let n = GetRandNumber();
-       let data = await readFile(path.join(__dirname,'Files',`file${n}.txt`));
-       console.log(data.toString());   
-    } catch (err) {
-        console.log(err);
-    }
 
-}
-async function PrintAllFiles(){
-
-    try {
-        const length = await readdirSync('./Files').length;
-    while(length> 0){
-        console.log('**********\n');
-        console.log(Read(length));
-        console.log('\n');
-        length-=1;
-    }     
-    } catch (err) {
-        console.log(err);
-    }
-    
-
-
-}
-module.exports={Create,ConcatFiles,ReadRndFile,PrintAllFiles};
+module.exports={Create,ConcatFiles,Read,GetRandNumber};

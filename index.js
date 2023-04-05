@@ -1,23 +1,41 @@
+
 const {EventHandler} = require('./Models/EventHandler');
-const {Create,ConcatFiles,ReadRndFile,PrintAllFiles} = require('./functions')
+const {Create,ConcatFiles, Read,GetRandNumber} = require('./functions')
 async function Main(){
-    await Create(1,'hello1');
-    await Create(2,'hello2');
-    await Create(3,'hello3');
-    await Create(4,'hello4');
-    await Create(5,'hello5');
+    for (let i = 1; i <=5; i++) {
+       await Create(i,`text${i}`)
+        
+    }
 
     await ConcatFiles();
-    let myEventHandler = new EventHandler();
-    myEventHandler.on('readFile', ReadRndFile)
-    myEventHandler.on('endProgram',PrintAllFiles)
+    const myEventHandler = new EventHandler();
+    myEventHandler.on('readFile', async() => {
+               let n = GetRandNumber();
+           let data =await Read(n); 
+           console.log(data);
+           myEventHandler.emit(`endProgram`);
+
+    });
+    myEventHandler.on('endProgram',async()=>{
+        for (let i = 1; i < 5; i++) {
+            let txt = await Read(i);
+            console.log(`${txt}\n***********`);
+            
+        }
+
+    });
     
-    setTimeout(()=>{
-        myEventHandler.emit('readFile');
-    },1000*6);
-    setTimeout(()=>{
-        myEventHandler.emit('endProgram');
-    },1000*0.1);
+    //setTimeout(()=>{
+      //  myEventHandler.emit('readFile');
+    //},1000*6);
+    let t=1;
+    let interval = setInterval(()=>{
+        console.log(t++);
+        if(t==4){
+            myEventHandler.emit('readFile');
+            clearInterval(interval);
+        }
+    },1000)
 
     
     
